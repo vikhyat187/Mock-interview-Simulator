@@ -38,3 +38,7 @@
 [unsubscribe](https://stackoverflow.com/questions/9418697/how-to-unsubscribe-from-a-socket-io-subscription/19384514#19384514)
 
 [passing prop to child component](https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children)
+
+[sending except sender](https://stackoverflow.com/questions/10058226/send-response-to-all-clients-except-sender)
+
+[clipboard](https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard)

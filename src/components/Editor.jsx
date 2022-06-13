@@ -38,13 +38,18 @@ const Editor = ({socketRef, roomId}) => {
 
     //only to call once while initialisation
     useEffect(() => {
-        socketRef.current.on(ACTIONS.CODE_CHANGE,({code})=>{
+        if(socketRef.current){
+            socketRef.current.on(ACTIONS.CODE_CHANGE,({code})=>{
             console.log('inside event');
             if(code !== null){
                 editorRef.current.setValue(code);
-            }
-        })
-    },[socketRef])
+                }
+            });
+        }   
+        return ()=>{
+            socketRef.current.off(ACTIONS.CODE_CHANGE)
+        }
+    },[socketRef.current])
 
     return <textarea id = "realtimeEditor"></textarea>
 }

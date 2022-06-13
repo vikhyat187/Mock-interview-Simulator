@@ -73,8 +73,22 @@ const EditorPage = () => {
         return <Navigate to="/"/>;
     }       
 
-    const leaveRoom = () =>{
+    function leaveRoom(){
+        reactNavigator('/')
         console.log(`${location.state?.userName} left the room`)
+    }
+
+  async function CopyToClipboard (){
+        try{
+           await navigator.clipboard.writeText(roomId);
+           toast.success("Room Id has been copied to your clipboard");
+            console.log(navigator.clipboard.readText())
+        }
+        catch(err){
+            toast.error("Could not copy Room Id");
+            console.log("error occured");
+        }
+      
     }
     return (
         <div className = "mainWrap">
@@ -92,7 +106,7 @@ const EditorPage = () => {
                         ))}
                     </div>
                 </div>
-                <button className="btn copybtn">Copy ROOM ID</button>
+                <button className="btn copybtn" onClick ={CopyToClipboard }>Copy ROOM ID</button>
                 <button className="btn leavebtn" onClick={leaveRoom}>Leave</button>
             </div>
             <div className="editorwrap">
