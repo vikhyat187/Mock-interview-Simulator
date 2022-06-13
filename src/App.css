@@ -2,8 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
     color: #fff;
+    height: 100vh;
 }
 
 
@@ -57,16 +57,17 @@ footer a{
     border-radius: 10px;
     font-size: 15px;
     cursor:pointer;
+    font-weight: bold;
     transition: all 0.3s ease-in-out;
 }
 
-.joinBtn{
+.joinBtn,.leavebtn{
     width:100px;
     margin-left: auto;
     background: #4aee88;
    
 }
-.joinBtn:hover{
+.joinBtn:hover,.leavebtn:hover{
     background: #2b824c;
 }
 
@@ -91,7 +92,10 @@ footer a{
 .mainWrap{
     display: grid;
     grid-template-columns: 280px auto;
+}
 
+.editorwrap{
+    background-color:white;
 }
 
 .aside{
@@ -101,4 +105,45 @@ footer a{
     display: flex;
     flex-direction: column;
     
+}
+
+.asideInner{
+    flex: 1;
+}
+
+.clientsList{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap:20px;
+}
+
+.client{
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    align-items: center;
+}
+
+.userName{
+    margin-top: 10px;
+}
+
+.logo{
+    border-bottom : 1px solid #424242;
+    padding-bottom: 10px;
+}
+.logoImage{
+    height: 60px;
+}
+.leavebtn{
+    margin-top: 20px;
+    width: 100%;
+}
+
+.CodeMirror{
+    font-size: 20px;
+    line-height: 1.0;
+    padding-top: 20px;
+    min-height: calc(100vh - 20px);
 }

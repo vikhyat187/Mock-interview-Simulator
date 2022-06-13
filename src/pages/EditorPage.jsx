@@ -1,23 +1,86 @@
 import React from 'react'
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom'
+import { useState,useRef,useEffect } from 'react';
 import Client from '../components/Client'
 import Editor from '../components/Editor'
-
+import { initSocket } from '../socket';
+import {useNavigate, useLocation,useParams,Navigate} from 'react-router-dom'
+import ACTIONS from '../actions.js'
+import toast from 'react-hot-toast';
 
 const EditorPage = () => {
+    const socketRef = useRef(null);
+    const reactNavigator = useNavigate();
+    const location = useLocation();
+    const {roomId} = useParams();
+    const [clients,setClients] = useState([]);
+
+    useEffect(() =>{
+        async function init(){
+            socketRef.current = await initSocket();
+            socketRef.current.on("connection_error",(err) => handleErrors(err));
+            socketRef.current.on("connection_failed" ,(err) => handleErrors(err));
+
+            function handleErrors(e){
+                console.log('server error',e);
+                toast.error('Socket connection failed, try again later');
+                reactNavigator('/')
+            }
+
+            socketRef.current.emit(ACTIONS.JOIN,{
+                roomId,
+                userName: location?.state.userName,
+            });
+
+            //listening for joined event except for self account
+            socketRef.current.on(
+                ACTIONS.JOINED,
+                ({clients, username, socketId}) =>{
+                    if(username !== location.state?.username){
+                        toast.success(`${username} joined `)
+                        console.log(`${username}  joined.`)
+                    }
+                    console.log("clients are ", clients);
+                    setClients(clients);
+                }
+            )
+            //listening on disconnected
+            socketRef.current.on(
+                ACTIONS.DISCONNECTED,
+                ({socketId, username}) =>{
+                    toast.success(`${username} has left the room. `); 
+                    setClients((prev) =>{
+                        return prev.filter(
+                            (client) => client.socketId !== socketId
+                        ); 
+
+                    });
+                    
+                })
+        };
+        init();
+        //clear listeners or else memory leak happens
+        return ()=>{
+            //side effect cleanup
+            socketRef.current.off(ACTIONS.JOINED);
+            socketRef.current.off(ACTIONS.DISCONNECTED);
+            socketRef.current.disconnect();
+        }
+    },[]);
     const {state} = useLocation();
     const {userName} = state;
-    const [clients,setClients] = useState([
-        {socketId:1 ,userName:"vikhyat"},
-        {socketId:2 ,userName:"Rakesh K"}
-    ]);
+  
+    if(!location.state){
+        return <Navigate to="/"/>;
+    }       
 
+    const leaveRoom = () =>{
+        console.log(`${location.state?.userName} left the room`)
+    }
     return (
         <div className = "mainWrap">
             <div className="aside">
                 <div className= "asideInner">
-                    <div className= "Logo">
+                    <div className= "logo">
                         <img className = "logoImage" src="/code-sync.png" alt="logo this side" />    
                     </div>
                     <h3>Connected</h3>
@@ -25,15 +88,15 @@ const EditorPage = () => {
                         {clients.map((client) =>(
                             <Client 
                             key={client.socketId}
-                            userName = {client.userName}/>
+                            userName = {client.username}/>
                         ))}
                     </div>
                 </div>
-                <button className="btn copyBtn">Copy ROOM ID</button>
-                <button className="btn leaveBtn">Leave</button>
+                <button className="btn copybtn">Copy ROOM ID</button>
+                <button className="btn leavebtn" onClick={leaveRoom}>Leave</button>
             </div>
             <div className="editorwrap">
-                <Editor/>
+                <Editor socketRef = {socketRef} roomId = {roomId}/>
             </div>
         </div>
     ); 
