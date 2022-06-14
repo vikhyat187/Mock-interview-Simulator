@@ -46,3 +46,5 @@
 [rerendering component by usestate()](https://www.geeksforgeeks.org/how-to-update-state-to-re-render-the-component-in-reactjs/#:~:text=If%20we%20want%20to%20re,component%20and%20its%20child%20components.)
 
 [passing data from child to parent component](https://bobbyhadz.com/blog/react-pass-data-from-child-to-parent)
+
+[url not found in build version on refresh](https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually)
