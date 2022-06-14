@@ -13,6 +13,7 @@ const EditorPage = () => {
     const location = useLocation();
     const {roomId} = useParams();
     const [clients,setClients] = useState([]);
+    const codeRef = useRef(null);
 
     useEffect(() =>{
         async function init(){
@@ -41,6 +42,11 @@ const EditorPage = () => {
                     }
                     console.log("clients are ", clients);
                     setClients(clients);
+                    socketRef.current.emit(ACTIONS.SYNC_CODE,
+                        {
+                            socketId,
+                            code:codeRef.current
+                        })
                 }
             )
             //listening on disconnected
@@ -110,7 +116,9 @@ const EditorPage = () => {
                 <button className="btn leavebtn" onClick={leaveRoom}>Leave</button>
             </div>
             <div className="editorwrap">
-                <Editor socketRef = {socketRef} roomId = {roomId}/>
+                <Editor socketRef = {socketRef} roomId = {roomId} onCodeChange={(code) =>{
+                    codeRef.current = code;
+                }}/>
             </div>
         </div>
     ); 

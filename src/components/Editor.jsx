@@ -8,7 +8,7 @@ import 'codemirror/addon/edit/closebrackets'
 import 'codemirror/addon/hint/anyword-hint.js'
 import ACTIONS from '../actions.js'
 
-const Editor = ({socketRef, roomId}) => {
+const Editor = ({socketRef, roomId, onCodeChange}) => {
     const editorRef = useRef(null);
     useEffect(() =>{
         async function init(){
@@ -23,11 +23,13 @@ const Editor = ({socketRef, roomId}) => {
                 console.log('changes',changes);
                 const {origin} = changes;
                 const code = instance.getValue();
+                onCodeChange(code);
                 if(origin !== 'setValue'){
                     socketRef.current.emit(ACTIONS.CODE_CHANGE,{
                         roomId,
                         code,
                     });
+                    
                 }
                 // console.log(code);
             })

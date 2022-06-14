@@ -42,3 +42,7 @@
 [sending except sender](https://stackoverflow.com/questions/10058226/send-response-to-all-clients-except-sender)
 
 [clipboard](https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard)
+
+[rerendering component by usestate()](https://www.geeksforgeeks.org/how-to-update-state-to-re-render-the-component-in-reactjs/#:~:text=If%20we%20want%20to%20re,component%20and%20its%20child%20components.)
+
+[passing data from child to parent component](https://bobbyhadz.com/blog/react-pass-data-from-child-to-parent)
